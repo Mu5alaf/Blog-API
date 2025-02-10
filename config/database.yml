@@ -16,11 +16,10 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: blog_api
-  password: admin
-  host: localhost
-  port: 5432
-
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "admin") %>
+  host: <%= ENV.fetch("DATABASE_HOST", "localhost") %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
 
 development:
   <<: *default
@@ -84,5 +83,3 @@ production:
   primary: &primary_production
     <<: *default
     database: blog_api_production
-    username: blog_api
-    password: <%= ENV["BLOG_API_DATABASE_PASSWORD"] %>

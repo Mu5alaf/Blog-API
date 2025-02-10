@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_ENV=development
+
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_HOST=db
+      - REDIS_URL=redis://redis:6379/0
+      - RAILS_ENV=development
+
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: blog_api_development
+    ports:
+      - "5433:5433"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

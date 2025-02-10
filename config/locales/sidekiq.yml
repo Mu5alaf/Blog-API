@@ -1,0 +1,4 @@
+:schedule:
+  post_deletion:
+    cron: "0 * * * *" #run every hour
+    class: "PostDeletionJob"

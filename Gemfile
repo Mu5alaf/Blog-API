@@ -49,7 +49,7 @@ group :development, :test do
 gem 'jwt'
 
 #background jobs & scheduling
-gem 'sidekiq'
+gem 'sidekiq-scheduler'
 gem 'redis'
 #Middleware that will make Rack-based apps CORS
 gem 'rack-cors'
