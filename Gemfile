@@ -45,13 +45,13 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
 
-#authentication & password encryption
+# authentication & password encryption
 gem 'jwt'
 
-#background jobs & scheduling
+# background jobs & scheduling
 gem 'sidekiq-scheduler'
 gem 'redis'
-#Middleware that will make Rack-based apps CORS
+# Middleware that will make Rack-based apps CORS
 gem 'rack-cors'
 end
 
