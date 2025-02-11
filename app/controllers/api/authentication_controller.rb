@@ -9,7 +9,7 @@ class Api::AuthenticationController < ApplicationController
             token = encode_token(user_id: user.id)
             render json: {user: user, token: token}, status: :created
         else
-            render json: {error: 'someting went wrong'}, status: :unprocessable_entity
+            render json: { error: "Something went wrong" }, status: :unprocessable_entity
         end
     end
 
@@ -20,15 +20,17 @@ class Api::AuthenticationController < ApplicationController
             token = encode_token(user_id: user.id)
             render json: { user: user, token: token }, status: :ok
         else
-            render json: { error: 'Invalid email or password' }, status: :unauthorized
+            render json: { error: "Invalid email or password" }, status: :unauthorized
         end
     end
     
+    private
+
     def user_params
         params.permit(:name, :email, :password, :password_confirmation, :image)
     end
 
-    # method to encode a token
+    # Method to encode a token
     def encode_token(payload)
         secret = Rails.application.credentials.secret_key_base
         JWT.encode(payload, secret)
