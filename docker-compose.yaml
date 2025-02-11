@@ -9,8 +9,10 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - DATABASE_HOST=db
       - REDIS_URL=redis://redis:6379/0
@@ -22,13 +24,33 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - DATABASE_HOST=db
       - REDIS_URL=redis://redis:6379/0
       - RAILS_ENV=development
-
+  migrate:
+    build: .
+    command: 
+      - /bin/sh
+      - -c 
+      - |
+        # Rails-based database check
+        until bundle exec rails db:version >/dev/null 2>&1; do
+          echo "Waiting for database connection..."
+          sleep 2
+        done
+        echo "Database ready! Running migrations..."
+        bundle exec rails db:migrate
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_HOST=db
+      - RAILS_ENV=development
   db:
     image: postgres:14
     environment:
@@ -39,11 +61,21 @@ services:
       - "5433:5433"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d blog_api_development"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
 
   redis:
     image: redis:6
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 5s
+      retries: 10
 
 volumes:
   pgdata:

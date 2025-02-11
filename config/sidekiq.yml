@@ -1,0 +1,8 @@
+:scheduler:
+  :schedule:
+    post_deletion:
+      # cron: "0 * * * *" # runs every houre
+      cron: "* * * * *" # runs every minute for test
+      class: "PostDeletionJob"
+      queue: default
+  :enabled: true
