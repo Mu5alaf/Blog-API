@@ -3,32 +3,32 @@ class Api::PostsController < ApplicationController
 
     #
     def index
-        #get all post from our model
+        # get all post from our model
         @posts = Post.all
-        #then serilized into json
+        # then serilized into json
         render json: @posts, include: [:tags, :comments, user:{only: [:name]}], status: :ok
     end
     
-    #get post by id
+    # get post by id
     def show
         render json: @post, include: [:tags, :comments ], status: :ok
     end
 
-    #create post
+    # create post
     def create
-        #check current user is post owner
+        # check current user is post owner
         @post = current_user.posts.build(post_params)
         
-        #check
+        # check
         if @post.save
-            #get tag & id
+            # get tag & id
             render json: @post.as_json(include: { tags: { only: [:id, :name] } }), status: :created
         else
             render json: { errors: 'someting went wrong' }, status: :unprocessable_entity
         end
     end
 
-    #update post
+    # update post
     def update
         if @post.user == current_user && @post.update(post_params)
             render json: @post.as_json(include: { tags: { only: [:id, :name] } }), status: :ok
@@ -37,7 +37,7 @@ class Api::PostsController < ApplicationController
         end
     end
 
-    #post delete
+    # post delete
     def destroy
         if @post.user == current_user
         render json: @post.destroy

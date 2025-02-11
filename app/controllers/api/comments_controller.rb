@@ -14,9 +14,9 @@ class Api::CommentsController < ApplicationController
         end
     end
 
-    #update comment
+    # update comment
     def update
-        #check if comment owner who the updater
+        # check if comment owner who the updater
         if @comment.user == current_user && @comment.update(comment_params)
             render json: @comment, status: :ok
         else
@@ -24,7 +24,7 @@ class Api::CommentsController < ApplicationController
         end
     end
 
-    #delete comment
+    # delete comment
     def destroy
         if @comment.user == current_user
             @comment.destroy
@@ -35,12 +35,12 @@ class Api::CommentsController < ApplicationController
     end
 
     private
-    #get the post
+    # get the post
     def set_post
         @post = Post.find(params[:post_id])
     end
 
-    #get comment of post
+    # get comment of post
     def set_comment
         @comment = @post.comments.find(params[:id])
     end

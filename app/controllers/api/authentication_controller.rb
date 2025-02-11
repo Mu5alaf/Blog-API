@@ -1,19 +1,19 @@
 class Api::AuthenticationController < ApplicationController
-    #skip auth befor this actions
+    # skip auth befor this actions
     skip_before_action :authenticate_request, only: [:signup, :login]
 
-    #signup
+    # signup
     def signup
         user = User.new(user_params)
         if user.save
             token = encode_token(user_id: user.id)
             render json: {user: user, token: token}, status: :created
         else
-            render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+            render json: {error: 'someting went wrong'}, status: :unprocessable_entity
         end
     end
 
-    #login
+    # login
     def login
         user = User.find_by(email: params[:email])
         if user&.authenticate(params[:password])
@@ -28,7 +28,7 @@ class Api::AuthenticationController < ApplicationController
         params.permit(:name, :email, :password, :password_confirmation, :image)
     end
 
-    #method to encode a token
+    # method to encode a token
     def encode_token(payload)
         secret = Rails.application.credentials.secret_key_base
         JWT.encode(payload, secret)

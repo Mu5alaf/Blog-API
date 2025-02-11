@@ -1,11 +1,11 @@
 class Post < ApplicationRecord
   belongs_to :user
   has_many :comments, dependent: :destroy
-  #post and tages relation
+  # post and tages relation
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
 
-  #vaildation
+  # vaildation
   validates :title, :body, presence: true
   validates :tags, presence: { message: "must have at least one tag" }
   scope :recent, -> { where("created_at >= ?", 24.hours.ago) }
