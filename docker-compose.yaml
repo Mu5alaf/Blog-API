@@ -40,7 +40,7 @@ services:
       - |
         # Rails-based database check
         until bundle exec rails db:version >/dev/null 2>&1; do
-          echo "Waiting for database connection..."
+          echo "Waiting for database connection..." 
           sleep 2
         done
         echo "Database ready! Running migrations..."

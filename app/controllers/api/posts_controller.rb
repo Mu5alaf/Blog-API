@@ -1,7 +1,7 @@
 class Api::PostsController < ApplicationController
     before_action :set_post, only: [:show, :update, :destroy]
 
-    #
+    # fetch all posts
     def index
         # get all post from our model
         @posts = Post.all
