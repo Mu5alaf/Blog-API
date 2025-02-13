@@ -36,6 +36,10 @@ gem "thruster", require: false
 gem "rack-cors"
 
 group :development, :test do
+  gem 'rspec-rails'
+  # uncomment for test case in spec file
+  # gem 'factory_bot_rails' # test data
+  # gem 'faker' # generate fake data
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
